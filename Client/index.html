@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>Zol Online - 졸라맨 점프</title>
+  <style>
+    body {
+      margin: 0;
+      background: #111;
+      overflow: hidden;
+      font-family: monospace;
+      color: #ccc;
+    }
+    .stickman {
+      position: absolute;
+      white-space: pre;
+      line-height: 1;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+
+  <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+  <script>
+    const socket = io("https://zol.onrender.com"); // 배포 후 서버 주소로 변경
+
+    const container = document.body;
+    const myId = Math.random().toString(36).substring(2, 9);
+    const stickmen = {};
+
+    const createStickman = (id, x, y) => {
+      const el = document.createElement("div");
+      el.classList.add("stickman");
+      el.id = id;
+      el.style.left = x + "px";
+      el.style.top = y + "px";
+      el.innerText = " O\n/|\n/ \\";
+      container.appendChild(el);
+      stickmen[id] = { el, x, y };
+    };
+
+    const updateStickman = (id, x, y) => {
+      if (stickmen[id]) {
+        stickmen[id].el.style.left = x + "px";
+        stickmen[id].el.style.top = y + "px";
+      }
+    };
+
+    socket.on("init", (others) => {
+      for (const id in others) {
+        if (id !== myId) createStickman(id, others[id].x, others[id].y);
+      }
+      socket.emit("new", { id: myId, x: 100, y: 300 });
+      createStickman(myId, 100, 300);
+    });
+
+    socket.on("new", (data) => {
+      if (data.id !== myId) createStickman(data.id, data.x, data.y);
+    });
+
+    socket.on("move", ({ id, y }) => {
+      if (stickmen[id]) {
+        stickmen[id].y = y;
+        updateStickman(id, stickmen[id].x, y);
+      }
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.code === "Space") {
+        let sm = stickmen[myId];
+        if (!sm) return;
+        let i = 0;
+        const jump = setInterval(() => {
+          sm.y -= 10;
+          updateStickman(myId, sm.x, sm.y);
+          socket.emit("move", { id: myId, y: sm.y });
+          i++;
+          if (i > 10) {
+            clearInterval(jump);
+            let j = 0;
+            const fall = setInterval(() => {
+              sm.y += 10;
+              updateStickman(myId, sm.x, sm.y);
+              socket.emit("move", { id: myId, y: sm.y });
+              j++;
+              if (j > 10) clearInterval(fall);
+            }, 30);
+          }
+        }, 30);
+      }
+    });
+  </script>
+</body>
+</html>
