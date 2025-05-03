@@ -20,9 +20,11 @@
   </style>
 </head>
 <body>
-  <script> src="const socket = io("https://zol.onrender.com")</script>
+
+  <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
   <script>
-    const socket = io("https://zol.onrender.com");
+    const socket = io("https://zol.onrender.com"); // 배포 후 서버 주소로 변경
+
     const container = document.body;
     const myId = Math.random().toString(36).substring(2, 9);
     const stickmen = {};
@@ -33,7 +35,7 @@
       el.id = id;
       el.style.left = x + "px";
       el.style.top = y + "px";
-      el.innerText = " O\\n/|\\n/ \\\\";
+      el.innerText = " O\n/|\n/ \\";
       container.appendChild(el);
       stickmen[id] = { el, x, y };
     };
