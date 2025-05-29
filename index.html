@@ -1,27 +1,32 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>ㅅㅏㄹㅁ</title>
-  <link rel="stylesheet" href="./style.css" />
+  <meta charset="UTF-8">
+  <title>2D6 주사위 굴림</title>
 </head>
 <body>
-  <div class="container">
-    <h1>📖 ㅅ ㅏ ㄹㅁ</h1>
-    <div id="entry"></div>
-    <div class="nav">
-      <button onclick="prevPage()">← 이전</button>
-      <input type="number" id="pageInput" placeholder="페이지 번호"/>
-      <button onclick="goToPage()">이동</button>
-      <button onclick="nextPage()">다음 →</button>
-    </div>
-    <div class="mt-4">
-      <a href="./write.html">
-        <button>✍️ 글쓰기</button>
-      </a>
-    </div>
-  </div>
-  <script src="./script.js"></script>
+  <h1>2D6 주사위 굴리기</h1>
+  <button onclick="rollDice()">주사위 굴리기</button>
+  <p id="result">결과가 여기에 표시됩니다.</p>
+
+  <script>
+    function rollDice() {
+      const d1 = Math.floor(Math.random() * 6) + 1;
+      const d2 = Math.floor(Math.random() * 6) + 1;
+      const total = d1 + d2;
+      let outcome = "";
+
+      if (total >= 10) {
+        outcome = "성공!";
+      } else if (total >= 7) {
+        outcome = "부분 성공!";
+      } else {
+        outcome = "실패!";
+      }
+
+      document.getElementById("result").innerText =
+        `🎲 주사위 결과: ${d1} + ${d2} = ${total} → ${outcome}`;
+    }
+  </script>
 </body>
 </html>
