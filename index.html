@@ -1,32 +1,17 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <title>2D6 주사위 굴림</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>2D6 주사위 굴리기</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <h1>2D6 주사위 굴리기</h1>
-  <button onclick="rollDice()">주사위 굴리기</button>
-  <p id="result">결과가 여기에 표시됩니다.</p>
-
-  <script>
-    function rollDice() {
-      const d1 = Math.floor(Math.random() * 6) + 1;
-      const d2 = Math.floor(Math.random() * 6) + 1;
-      const total = d1 + d2;
-      let outcome = "";
-
-      if (total >= 10) {
-        outcome = "성공!";
-      } else if (total >= 7) {
-        outcome = "부분 성공!";
-      } else {
-        outcome = "실패!";
-      }
-
-      document.getElementById("result").innerText =
-        `🎲 주사위 결과: ${d1} + ${d2} = ${total} → ${outcome}`;
-    }
-  </script>
+  <div class="container">
+    <h1>🎲 2D6 주사위 굴리기</h1>
+    <button id="rollButton">주사위 굴리기</button>
+    <p id="result">결과가 여기에 표시됩니다.</p>
+  </div>
+  <script src="script.js"></script>
 </body>
 </html>
